@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">testing1</string>
+    <string name="regist_title"><strong>회원가입</strong></string>
+    <string name="regist_id"><strong>아이디</strong></string>
+    <string name="regist_pwd"><strong>비밀번호</strong></string>
+    <string name="regist_pwd2"><strong>비밀번호 확인</strong></string>
+    <string name="regist_name"><strong>이름</strong></string>
+    <string name="regist_cname"><strong>단체 명</strong></string>
+    <string name="regist_phone"><strong>휴대폰 번호</strong></string>
+    <string name="regist_cphone"><strong>전화 번호</strong></string>
+    <string name="regist_birth"><strong>생년월일</strong></string>
+    <string name="regist_sex"><strong>성별</strong></string>
+    <string name="regist_nick"><strong>닉네임</strong></string>
+
+</resources>
