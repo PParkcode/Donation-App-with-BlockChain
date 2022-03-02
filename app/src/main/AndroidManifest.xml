@@ -18,6 +18,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".Register"></activity>
+        <activity android:name=".MainNav"></activity>
     </application>
 
 </manifest>

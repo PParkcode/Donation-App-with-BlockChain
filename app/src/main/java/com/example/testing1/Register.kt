@@ -2,7 +2,11 @@ package com.example.testing1
 
 import android.app.Activity
 import android.os.Bundle
+import android.util.Log
 import android.widget.*
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+private const val TAG="tag1"
 
 class Register :Activity(){
     override fun onCreate(savedInstanceState: Bundle?){
@@ -77,7 +81,20 @@ class Register :Activity(){
                 text_sex.visibility=android.view.View.VISIBLE
             }
         }
+        btn_submit.setOnClickListener{
+            val memberData:MemberData=MemberData(edit_id.text.toString(),
+                edit_pwd.text.toString(),edit_name.text.toString(),
+                edit_phone.text.toString(),edit_birth.text.toString(),1,edit_nick.text.toString(),1)
+            val json:String= makeJson(memberData)
+            Log.d(TAG,json)
+        }
 
 
+    }
+    private fun makeJson(memberData:MemberData):String
+    {
+        var gson: Gson = GsonBuilder().create()
+        var json:String=gson.toJson(memberData)
+        return json
     }
 }

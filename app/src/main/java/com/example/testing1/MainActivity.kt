@@ -8,13 +8,15 @@ import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import androidx.appcompat.app.AppCompatActivity
+import com.example.testing1.Retrofit.IRetrofit
+import com.example.testing1.Retrofit.RetrofitManager
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
 
 
-private const val TAG="MainActivity"
+private const val TAG="tag1"
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,17 +39,13 @@ class MainActivity : AppCompatActivity() {
         signup_btn=findViewById<Button>(R.id.signup_btn)
         login_btn=findViewById(R.id.login_btn)
 
-        val tmpRetrofit = Retrofit.Builder()
-            .baseUrl("")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-        var server=tmpRetrofit.create(ConnectApi::class.java)
+
         signup_btn.setOnClickListener{
             var intent= Intent(applicationContext,Register::class.java)
             startActivity(intent)
         }
 
-        Rgroup_login.setOnCheckedChangeListener{compoundButton,b->
+        Rgroup_login.setOnCheckedChangeListener{compoundButton,b->   //필요한가?
             if(charity_mode.isChecked==true){
 
             }
@@ -57,13 +55,16 @@ class MainActivity : AppCompatActivity() {
             val loginData:LoginData=LoginData(edit_id.text.toString(),edit_pwd.text.toString())
             val json:String= makeJson(loginData)
             Log.d(TAG,json)
-            server.loginFunc(json).enqueue(object : Callback<String>{
-                override fun onFailure(call: Call<String>, t: Throwable) {
-                }
-                override fun onResponse(call: Call<String>, response: Response<String>) {
-                    Log.d(TAG,response?.body().toString())
-                }
-            })
+
+            //RetrofitManager.instance.LoginCall(json)
+
+
+
+            var intent= Intent(applicationContext,MainNav::class.java)
+            startActivity(intent)
+
+
+
 
         }
 
@@ -75,10 +76,7 @@ class MainActivity : AppCompatActivity() {
     {
         var gson:Gson=GsonBuilder().create()
         var json:String=gson.toJson(loginData)
-
         return json
-
-
     }
 
 
