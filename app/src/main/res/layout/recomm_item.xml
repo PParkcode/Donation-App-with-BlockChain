@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 뷰페이저 안에 들어갈 fragmnet 정의-->
+
+<LinearLayout android:id="@+id/content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+    <ImageView
+        android:id="@+id/recomm_imgView"
+        android:layout_width="300dp"
+        android:layout_height="400dp">
+    </ImageView>
+</LinearLayout>

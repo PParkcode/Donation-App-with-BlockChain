@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/tab_myGroup"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_emoji_emotions_24"
+        android:title="MY단체"
+        app:showAsAction="always">
+    </item>
+    <item
+        android:id="@+id/tab_share"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_assignment_24"
+        android:title="나눔리스트"
+        app:showAsAction="always">
+    </item>
+    <item
+        android:id="@+id/tab_about"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_message_24"
+        android:title="소식"
+        app:showAsAction="always">
+    </item>
+    <item
+        android:id="@+id/tab_myInform"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_account_box_24"
+        android:title="내정보"
+        app:showAsAction="always">
+    </item>
+</menu>
