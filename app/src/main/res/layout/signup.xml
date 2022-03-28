@@ -147,49 +147,9 @@
                 android:hint="  - 구분없이 입력해주세요">
             </EditText>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/regist_birth"
-                android:id="@+id/text_birth"
-                android:textSize="20dp">
-            </TextView>
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/edit_birth"
-                android:layout_weight="1"
-                android:layout_marginBottom="20dp"
-                android:hint="  6자리 입력">
-            </EditText>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/regist_sex"
-                android:id="@+id/text_sex"
-                android:textSize="20dp">
-            </TextView>
-            <RadioGroup
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/rGroup_sex"
-                android:layout_marginBottom="20dp"
-                android:orientation="horizontal">
-                <RadioButton
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="30dp"
-                    android:id="@+id/rb_m"
-                    android:text="남성">
-                </RadioButton>
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/rb_f"
-                    android:text="여성">
-                </RadioButton>
-            </RadioGroup>
+
+
 
             <TextView
                 android:layout_width="match_parent"

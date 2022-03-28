@@ -1,6 +1,9 @@
 package com.example.testing1
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -10,6 +13,7 @@ class MainNav:AppCompatActivity() {
     override fun onCreate(savedInstanceState:Bundle?){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_nav)
+
 
         var bnv_main=findViewById(R.id.bnv_main) as BottomNavigationView //바텀 네비게이션 객체
 
@@ -39,5 +43,21 @@ class MainNav:AppCompatActivity() {
             selectedItemId=R.id.tab_share
         }
 
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.bar_menu,menu)
+        return true;
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.getItemId())
+        {
+            R.id.search_item ->{
+                var intent= Intent(applicationContext,SearchActivity::class.java)
+                startActivity(intent)
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

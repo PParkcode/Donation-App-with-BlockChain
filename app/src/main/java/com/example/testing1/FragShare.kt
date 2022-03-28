@@ -7,18 +7,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.widget.ViewPager2
-import kotlinx.android.synthetic.main.fragment_share.*
+import com.example.testing1.databinding.FragmentShareBinding
 import org.w3c.dom.Text
 
 private const val NUM_PAGES = 5
 
 class FragShare : Fragment() {
-    private lateinit var intro_nick_text:TextView
-    private lateinit var intro_text:TextView
-    private lateinit var more_camp_btn:Button
-    private lateinit var recomm_viewPager:ViewPager2
+    private var mBinding: FragmentShareBinding? = null
+    private val binding get() = mBinding!!
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,31 +30,27 @@ class FragShare : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        val view=inflater.inflate(R.layout.fragment_share, container, false)
-        recomm_viewPager=view.findViewById(R.id.recomm_viewPager)
-        intro_nick_text=view.findViewById(R.id.intro_nick_text)
-        intro_text=view.findViewById(R.id.intro_text)
-        more_camp_btn=view.findViewById(R.id.more_camp_btn)
 
-        recomm_viewPager.adapter = RecommViewPagerAdapter(getRecommList()) // 어댑터 생성
-        recomm_viewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL // 방향을 가로로
-        recomm_viewPager.offscreenPageLimit=3
+        mBinding=DataBindingUtil.inflate(inflater,R.layout.fragment_share,container,false)
+        binding.recommViewPager.adapter=RecommViewPagerAdapter(getRecommList())
+        binding.recommViewPager.orientation=ViewPager2.ORIENTATION_HORIZONTAL
+        binding.recommViewPager.offscreenPageLimit=3
 
-
-
-        return view
+        return binding.root
     }
 
     override fun onStart() {
         super.onStart()
 
     }
-    private fun getRecommList(): ArrayList<Int> {
+    override fun onDestroyView() { // onDestroyView 에서 binding class 인스턴스 참조를 정리해주어야 한다.
+        mBinding = null
+         super.onDestroyView() }
+
+
+    private fun getRecommList(): ArrayList<Int> { // ArrayList가 아닌 retrofit에서 받아온 코드로 수정
         return arrayListOf<Int>(R.drawable.test1, R.drawable.test2, R.drawable.test4)
     }
-
-
 
 
 

@@ -1,5 +1,4 @@
 package com.example.testing1
 
-data class LoginData(var id:String, var pwd:String) {
-}
+data class LoginData(var email:String, var password:String)
 

@@ -1,83 +1,151 @@
 package com.example.testing1
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
-import android.widget.EditText
-import android.widget.RadioButton
-import android.widget.RadioGroup
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import com.example.testing1.Retrofit.IRetrofit
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.example.testing1.Retrofit.RetrofitManager
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import retrofit2.*
-import retrofit2.converter.gson.GsonConverterFactory
+import com.example.testing1.databinding.ActivityMainBinding
 
 
 private const val TAG="tag1"
+private lateinit var binding: ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
+    init{
+        instance = this
+    }
+    companion object{
+        private var instance:Context? = null
+        fun getInstance(): Context? {
+            return instance
+        }
+    }
+
+
+    lateinit var myLoginViewModel:LoginViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        lateinit var edit_id:EditText
-        lateinit var edit_pwd:EditText
-        lateinit var Rgroup_login:RadioGroup
-        lateinit var user_mode:RadioButton
-        lateinit var charity_mode:RadioButton
-        lateinit var signup_btn:Button
-        lateinit var login_btn:Button
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        myLoginViewModel=ViewModelProvider(this).get(LoginViewModel::class.java)
 
 
-        edit_id=findViewById<EditText>(R.id.edit_id)
-        edit_pwd=findViewById<EditText>(R.id.edit_pwd)
-        Rgroup_login=findViewById(R.id.Rgroup_login)
-        user_mode=findViewById(R.id.user_mode)
-        charity_mode=findViewById(R.id.charity_mode)
-        signup_btn=findViewById<Button>(R.id.signup_btn)
-        login_btn=findViewById(R.id.login_btn)
+        if(MySharedPreferences.getUserId(this).isNullOrBlank() || MySharedPreferences.getUserPass(this).isNullOrBlank()) {
+            Log.d(TAG,"자동 로그인 안되었을 때")
+            Login()
+
+        }
+        else { // SharedPreferences 안에 값이 저장되어 있을 때 -> MainActivity로 이동
+            Toast.makeText(this, "${MySharedPreferences.getUserNick(this)}님 자동 로그인 되었습니다.", Toast.LENGTH_SHORT).show()
+            autoLogin(MySharedPreferences.getUserId(this),MySharedPreferences.getUserPass(this))
+            //val intent = Intent(this, MainNav::class.java)
+            //startActivity(intent)
+            //finish()
+        }
 
 
-        signup_btn.setOnClickListener{
+        binding.signupBtn.setOnClickListener{
             var intent= Intent(applicationContext,Register::class.java)
             startActivity(intent)
         }
-
-        Rgroup_login.setOnCheckedChangeListener{compoundButton,b->   //필요한가?
-            if(charity_mode.isChecked==true){
-
-            }
-        }
-
-        login_btn.setOnClickListener{
-            val loginData:LoginData=LoginData(edit_id.text.toString(),edit_pwd.text.toString())
-            val json:String= makeJson(loginData)
-            Log.d(TAG,json)
-
-            //RetrofitManager.instance.LoginCall(json)
-
-
-
-            var intent= Intent(applicationContext,MainNav::class.java)
-            startActivity(intent)
-
-
-
-
-        }
-
-
-
     }
 
-    private fun makeJson(loginData:LoginData):String
+
+    fun Login() {
+        Log.d(TAG,"Login()함수 진입")
+
+        binding.loginBtn.setOnClickListener {
+            Log.d(TAG,"버튼 리스너 작동")
+
+            val loginData:LoginData=LoginData(binding.editId.text.toString(),binding.editPwd.text.toString())
+
+            Log.d(TAG,loginData.toString())
+
+            val loginLiveData: MutableLiveData<ResponseCode>? = RetrofitManager().loginCall(loginData)
+
+            loginLiveData?.observe(this, Observer {
+                Log.d(TAG,"데이터 변경 login LiveData: ${it}")
+
+                if(loginLiveData?.value!=null)
+                {
+                    if(loginLiveData.value!!.code!=200)
+                    {
+                        Toast.makeText(this, "아이디와 비밀번호를 확인하세요", Toast.LENGTH_SHORT).show()
+                    }else{
+
+                        MySharedPreferences.setUserId(this, binding.editId.text.toString())
+                        MySharedPreferences.setUserPass(this,binding.editPwd.text.toString())
+                        //MySharedPreferences.setUserCookie(this, loginLiveData.value!!.message)
+                        Log.d(TAG,"일반 로그인: "+MySharedPreferences.getUserId(this))
+                        Log.d(TAG,"일반 로그인: "+MySharedPreferences.getUserPass(this))
+                        Log.d(TAG,"일반 로그인: "+MySharedPreferences.getUserCookie(this))
+                        /*
+                        MySharedPreferences.setUserNick(this, myLoginViewModel.member!!.value!!.nickname)
+                        MySharedPreferences.setUserName(this,myLoginViewModel.member!!.value!!.name)
+                        MySharedPreferences.setUserMode(this, myLoginViewModel.member!!.value!!.memberType)
+                        //MySharedPreferences.setUserBirth(this,myMemberViewModel.member!!.value!!.birth)
+                        MySharedPreferences.setUserPoint(this,myLoginViewModel.member!!.value!!.pointAmount)
+                        Toast.makeText(this, "${MySharedPreferences.getUserId(this)}님 로그인 되었습니다.", Toast.LENGTH_SHORT).show()
+                         */
+                        var intent = Intent(this, MainNav::class.java)
+                        startActivity(intent)
+                        finish()
+                    }
+                }
+            })
+
+            //myLoginViewModel.getLoginResponse(loginData)
+        }
+    }
+
+    fun autoLogin(id:String,pwd:String)
     {
-        var gson:Gson=GsonBuilder().create()
-        var json:String=gson.toJson(loginData)
-        return json
+        val loginData:LoginData=LoginData(id,pwd)
+
+        Log.d(TAG,loginData.toString())
+
+        val autoLoginLiveData: MutableLiveData<ResponseCode>? = RetrofitManager().loginCall(loginData)
+
+        autoLoginLiveData?.observe(this, Observer {
+            Log.d(TAG,"데이터 변경 login LiveData: ${it}")
+
+            if(autoLoginLiveData?.value!=null)
+            {
+                if(autoLoginLiveData.value!!.code!=200)
+                {
+                    Toast.makeText(this, "아이디와 비밀번호를 확인하세요", Toast.LENGTH_SHORT).show()
+                }else{
+
+                    MySharedPreferences.setUserCookie(this, autoLoginLiveData.value!!.message)
+                    Log.d(TAG,"${id}님이 자동 로그인")
+                    Log.d(TAG,"자동 로그인: "+MySharedPreferences.getUserId(this))
+                    Log.d(TAG,"자동 로그인: "+MySharedPreferences.getUserPass(this))
+                   // Log.d(TAG,"자동 로그인: "+MySharedPreferences.getUserCookie(this))
+                    var intent = Intent(this, MainNav::class.java)
+                    startActivity(intent)
+                    finish()
+                }
+            }
+        })
     }
+    fun getContext():Context{
+        return applicationContext
+    }
+
+
+
+
+
+
 
 
 }

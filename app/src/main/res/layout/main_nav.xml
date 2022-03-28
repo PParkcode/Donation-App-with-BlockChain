@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <!--원래 framelayout의 height는 0dp였음-->
     <FrameLayout
         android:id="@+id/fl_container"
