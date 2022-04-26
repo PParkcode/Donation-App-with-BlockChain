@@ -1,14 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- 뷰페이저 안에 들어갈 fragmnet 정의-->
-
-<LinearLayout android:id="@+id/content"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    >
-    <ImageView
-        android:id="@+id/recomm_imgView"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data class=".RecommItemBinding">
+        <variable
+            name="recommCampaign"
+            type="com.example.testing1.model.Campaign">
+        </variable>
+    </data>
+
+<LinearLayout
+    android:id="@+id/content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.cardview.widget.CardView
         android:layout_width="300dp"
-        android:layout_height="400dp">
-    </ImageView>
+        android:layout_height="400dp"
+        android:id="@+id/recomm_card"
+        app:cardCornerRadius="40dp"
+        app:cardMaxElevation="5dp"
+        >
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:imageUrl="@{recommCampaign.coverImagePath}"
+            android:id="@+id/recomm_img">
+        </ImageView>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="30dp">
+
+            <TextView
+                android:id="@+id/title_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="35dp"
+                android:text="@{recommCampaign.subject}"
+                android:textColor="@color/black"
+                android:textSize="25dp"
+                app:layout_constraintBottom_toTopOf="@+id/charity_txt"
+                app:layout_constraintStart_toStartOf="parent">
+            </TextView>
+
+            <TextView
+                android:id="@+id/charity_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="25dp"
+                android:text="@{recommCampaign.charityName}"
+                android:textSize="18dp"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toTopOf="@+id/dDay_txt"
+                app:layout_constraintStart_toStartOf="parent">
+            </TextView>
+
+            <TextView
+                android:id="@+id/dDay_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="D-21"
+                android:textColor="@color/black"
+                android:textSize="22dp"
+                app:layout_constraintBottom_toTopOf="@+id/progressBar"
+                app:layout_constraintStart_toStartOf="@+id/progressBar">
+            </TextView>
+
+            <androidx.core.widget.ContentLoadingProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:max="100"
+                android:progress="@{recommCampaign.currentAmount*100/recommCampaign.goalAmount}"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toTopOf="@+id/currentAmount_txt"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+            </androidx.core.widget.ContentLoadingProgressBar>
+
+            <TextView
+                android:id="@+id/currentAmount_txt"
+                android:layout_width="wrap_content"
+                android:textColor="@color/black"
+                android:layout_height="wrap_content"
+                android:text="@{recommCampaign.currentAmount+`원`}"
+                android:textSize="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent">
+            </TextView>
+
+            <TextView
+                android:id="@+id/percent_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{recommCampaign.currentAmount*100/recommCampaign.goalAmount +`%`}"
+                android:textSize="16dp"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent">
+            </TextView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
+    </androidx.cardview.widget.CardView>
+
 </LinearLayout>
+</layout>

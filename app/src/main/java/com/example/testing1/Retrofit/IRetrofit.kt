@@ -1,32 +1,55 @@
 package com.example.testing1.Retrofit
 
-import androidx.lifecycle.LiveData
 import com.example.testing1.*
+import com.example.testing1.model.*
 import com.google.gson.JsonElement
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
+import retrofit2.http.*
+import java.time.LocalDate
 
 
 // retrofit 관련 통신 api 인터페이스
 //대부분 반환형은 Call 객체의 json 형태로
 interface IRetrofit {
     @POST( "api/new/login") //로그인 요청
-    fun loginApi(@Body() idAndPwd:LoginData):Call<ResponseCode>
+    fun loginApi(@Body() idAndPwd: LoginData):Call<ResponseCode>
 
 
     @POST("api/new") //회원가입 요청
-    fun registApi(@Body() data:MemberData):Call<ResponseCode>
+    fun registApi(@Body() data: MemberData):Call<ResponseCode>
 
-    @GET("api/new/campaign") //캠페인 리스트 요청
-    fun campListApi():Call<CampaignList>
+    @POST("api/new/campaign") //캠페인 리스트 요청
+    fun campListApi(@Body() searchKey:CampaignSearchConditionDto):Call<List<Campaign>>
 
     @GET("api/new/campaign/{camapaignId}") //url 체크
-    fun detailCampApi():Call<Campaign>
+    fun detailCampApi(@Path("camapaignId") campaignId:String):Call<Campaign>
 
-    @GET("api/new/campaign") //url 체크
-    fun campTransactionApi(data:String):Call<JsonElement>
+
+
+    @GET("api/user")
+    fun getUserApi():Call<MemberData>
+
+
+    @Multipart
+    @POST("api/charity")
+    fun registCampaignApi(
+        /*
+            @Part("campaignName") campaignName: RequestBody,
+            @Part("charityName") charityName:RequestBody,
+            @Part("deadline") deadline: RequestBody,
+            @Part("goalAmount") goalAmount:RequestBody,
+            @Part("categories") categories:RequestBody,
+         */
+        @PartMap map:HashMap<String,RequestBody> ,
+
+            @Part coverImagePath:MultipartBody.Part?,
+            @Part detailImagePath:MultipartBody.Part?,
+   ):Call<ResponseCode>
+
+    @POST("api/charity")
+    fun registCampaignByJsonApi(@Body() campaign:Campaign):Call<ResponseCode>
 
 
 }
