@@ -145,7 +145,7 @@ class RegistCampaign:AppCompatActivity() {
             var coverImg=BitmapToString(coverBitmap)
             var detailImg=BitmapToString(detailBitmap)
 
-            var campaign: Campaign =Campaign(0,"",campName,charityName,null,0,goal,null,"","","")
+            var campaign: Campaign =Campaign(0,"",campName,charityName,null,0,goal,null,"","","",campDes)
 
 
 

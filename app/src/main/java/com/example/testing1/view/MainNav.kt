@@ -20,6 +20,7 @@ import com.example.testing1.databinding.MainNavBinding
 import com.example.testing1.view.SearchActivity
 import com.example.testing1.viewModel.MemberViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.iamport.sdk.domain.core.Iamport
 
 private val TAG="tag1"
 class MainNav:AppCompatActivity() {
@@ -33,6 +34,7 @@ class MainNav:AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding=DataBindingUtil.setContentView<MainNavBinding>(this,R.layout.main_nav)
         setContentView(binding.root)
+        Iamport.init(this)
 
         binding.viewModel=memberViewModel
         binding.lifecycleOwner=this

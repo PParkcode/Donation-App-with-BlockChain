@@ -51,5 +51,12 @@ interface IRetrofit {
     @POST("api/charity")
     fun registCampaignByJsonApi(@Body() campaign:Campaign):Call<ResponseCode>
 
+    @GET("api/user/give")
+    fun donateApi(@Query("amount") amount:String):Call<ResponseCode>
 
+    @POST("api/user/pay")
+    fun chargeApi(@Query("amount") amount:String):Call<ResponseCode>
+
+    @GET("api/user/logout")
+    fun logoutApi():Call<ResponseCode>
 }

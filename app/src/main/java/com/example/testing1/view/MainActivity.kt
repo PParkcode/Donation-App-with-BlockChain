@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
 
         if(MySharedPreferences.getUserId(this).isNullOrBlank() || MySharedPreferences.getUserPass(this).isNullOrBlank()) {
             Log.d(TAG,"자동 로그인 안되었을 때")
-            Login()
+            //Login()
 
         }
         else { // SharedPreferences 안에 값이 저장되어 있을 때 -> MainActivity로 이동
@@ -64,7 +64,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        /*
+
         binding.loginBtn.setOnClickListener{
             val loginData: LoginData = LoginData(binding.editId.text.toString(),binding.editPwd.text.toString())
 
@@ -98,7 +98,7 @@ class MainActivity : AppCompatActivity() {
             })
         }
 
-         */
+
     }
 
 

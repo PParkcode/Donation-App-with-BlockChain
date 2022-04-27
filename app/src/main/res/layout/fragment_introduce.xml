@@ -20,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/campaign_description"
-        android:text="폭격과 총탄 속에서 목숨을 위협받고 있는 우크라이나 아동을에게 5000만원을 지원합니다"
+        android:text="@{viewmodel.campaignData.description}"
         android:textSize="30dp"
         android:textColor="@color/white"
         android:textAppearance="@style/TextAppearance.AppCompat.Display2">
@@ -67,7 +67,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:max="100"
-        android:progress="0"
+        android:progress="@{viewmodel.campaignData.goalAmount != 0 ? viewmodel.campaignData.currentAmount*100/viewmodel.campaignData.goalAmount : 1}"
         android:layout_marginTop="8dp"
         android:textColor="@color/white"
         app:layout_constraintTop_toBottomOf="@+id/current_amount"
@@ -79,7 +79,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/goal_amount"
         app:layout_constraintTop_toBottomOf="@+id/progress_bar"
-        android:text="50,000,000원"
+        android:text="@{viewmodel.campaignData.goalAmount+`원`}"
         app:layout_constraintRight_toRightOf="parent">
     </TextView>
     <ImageView

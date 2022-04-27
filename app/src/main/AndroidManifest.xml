@@ -33,6 +33,7 @@
         <activity android:name=".view.MoreCampaignActivity"></activity>
         <activity android:name=".view.DetailCampaign"></activity>
         <activity android:name=".view.RegistCampaign"></activity>
+        <activity android:name=".view.MyData"></activity>
 
     </application>
 

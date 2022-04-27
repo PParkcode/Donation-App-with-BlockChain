@@ -1,16 +1,26 @@
 package com.example.testing1.view
 
+import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
+import android.text.InputType
 import android.util.Log
+import android.widget.EditText
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
+import com.example.testing1.MySharedPreferences
 import com.example.testing1.R
 import com.example.testing1.Retrofit.RetrofitManager
 import com.example.testing1.Retrofit.RetrofitManager.Companion.instance
 import com.example.testing1.databinding.DetailCampaignBinding
+import com.example.testing1.model.ResponseCode
 import com.example.testing1.viewModel.DetailCampaignViewModel
+import com.example.testing1.viewModel.LoginViewModel
+import com.example.testing1.viewModel.ResponseViewModel
 import com.google.android.material.tabs.TabLayout
 import com.iamport.sdk.domain.core.Iamport
 import java.text.SimpleDateFormat
@@ -21,6 +31,7 @@ private val TAG="tag1"
 class DetailCampaign:AppCompatActivity() {
     private lateinit var binding: DetailCampaignBinding
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         val campaignViewModel by viewModels<DetailCampaignViewModel>()
         super.onCreate(savedInstanceState)
@@ -28,13 +39,16 @@ class DetailCampaign:AppCompatActivity() {
         val campaignId: Int? =intent.getIntExtra("id",0)
         Log.d(TAG,"intent get: ${campaignId.toString()}")
 
+
         binding= DataBindingUtil.setContentView<DetailCampaignBinding>(this, R.layout.detail_campaign)
         setContentView(binding.root)
+
         var actionBar: ActionBar?
         actionBar=supportActionBar
         actionBar?.hide()
 
-        binding.viewModel=campaignViewModel
+
+        binding.detailViewModel=campaignViewModel
         binding.lifecycleOwner=this
 
         val currentDate = currentDate()
@@ -79,12 +93,30 @@ class DetailCampaign:AppCompatActivity() {
 
 
         binding.donateBtn.setOnClickListener{
-            Iamport.init(this)
+            var edit: EditText = EditText(this)
+            edit.setInputType(InputType.TYPE_CLASS_NUMBER)
+            AlertDialog.Builder(this)
+                    .setTitle("후원하기")
+                    .setMessage("후원포인트를 입력해주세요.")
+                    .setView(edit)
+                    .setPositiveButton("후원하기"){dialog, which->
+                       donate(edit.text.toString())
+                        val intent = Intent(this, MainNav::class.java)
+                        startActivity(intent)
+
+                    }
+                    .setNegativeButton("취소") { dialog, _ -> dialog.dismiss() }
+                    .show()
         }
 
 
 
 
+    }
+    fun donate(amount:String){
+        var code = instance.donate(amount)
+
+        //Toast.makeText(this, , Toast.LENGTH_SHORT).show()
     }
 
     fun Date.dateToString(format: String, local : Locale = Locale.getDefault()): String{

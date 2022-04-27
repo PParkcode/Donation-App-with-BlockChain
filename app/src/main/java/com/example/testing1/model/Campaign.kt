@@ -13,7 +13,8 @@ data class Campaign(var campaignId:Int=0,
                     var categories:List<String>? =null,
                     var coverImagePath:String="",
                     var detailImagePath:String="",
-                    var reviewImagePath:String=""
+                    var reviewImagePath:String="",
+                    var description:String=""
 
                     ){
 }
