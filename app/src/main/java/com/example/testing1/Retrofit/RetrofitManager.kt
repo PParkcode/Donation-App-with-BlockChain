@@ -4,9 +4,11 @@ import android.content.ContentValues.TAG
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.testing1.*
 import com.example.testing1.model.*
+import com.example.testing1.view.ExchangeActivity2
 import com.example.testing1.view.MainActivity
 import okhttp3.MultipartBody
 import okhttp3.Request
@@ -18,6 +20,7 @@ import java.time.LocalDate
 
 private const val TAG="tag1"
 const val BASE_URL ="http://10.0.2.2:8080/"
+const val NH_URL="https://developers.nonghyup.com/"
 //repository와 같은 역할을 한다
 class RetrofitManager {
 
@@ -30,6 +33,8 @@ class RetrofitManager {
     //레트로핏 인터페이스 가져오기
     @RequiresApi(Build.VERSION_CODES.O)
     private val iRetrofit: IRetrofit? = RetrofitClient.getClient(com.example.testing1.Retrofit.BASE_URL)?.create(IRetrofit::class.java)
+    @RequiresApi(Build.VERSION_CODES.O)
+    private val iRetrofit2:IRetrofit? = RetrofitClient2.getClient(com.example.testing1.Retrofit.NH_URL)?.create(IRetrofit::class.java)
 
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -68,8 +73,6 @@ class RetrofitManager {
                         codeCookie = ResponseCode(statusData, tmpCookie)
                     }
 
-
-
                     data.value = codeCookie!!
                     Log.d(TAG, "data.value: ${data.value}")
                 } else {
@@ -82,14 +85,13 @@ class RetrofitManager {
 
             override fun onFailure(call: Call<ResponseCode>, t: Throwable) {
                 Log.d(TAG, "login함수 onFailure 진입\n t:${t}")
-                // data?.value?.pointAmount=999
+
                 t.stackTrace
             }
         })
-        Log.d(TAG, "리턴 전 마지막 출력 : ${data.value}")
+
         return data
     }
-
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun registCall(registData: MemberData): MutableLiveData<Int>? {
@@ -106,11 +108,6 @@ class RetrofitManager {
                     val tmpCookie = response.headers().get("Set-Cookie")
                     var cookieArr = tmpCookie?.split(";")
                     var cookie: String = cookieArr!!.get(0)
-
-                    Log.d(TAG, "Header.(): " + tmpCookie.toString())
-                    Log.d(TAG, "cookie:${cookie}")
-                    Log.d(TAG, "code:${statusData}")
-                    Log.d(TAG, msg)
 
                     data.value = statusData
                     Log.d(TAG, "data.value: ${data.value}")
@@ -209,55 +206,28 @@ class RetrofitManager {
 
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun registCampaign(//campaignName:RequestBody, charityName:RequestBody, deadline: RequestBody, goalAmount:RequestBody, categories:RequestBody,
-            map: HashMap<String, RequestBody>, coverImage: MultipartBody.Part, detailImage: MultipartBody.Part): ResponseCode? {
-        var code: ResponseCode? = null
-        Log.d(TAG, "RequestBody(): " + RequestBody.toString())
-        iRetrofit?.registCampaignApi(
-                //campaignName,charityName,deadline,goalAmount,categories,coverImage,detailImage
-                map, coverImage, detailImage)?.enqueue(object : Callback<ResponseCode> {
-            override fun onResponse(call: Call<ResponseCode>, response: Response<ResponseCode>) {
-                if (response.isSuccessful) {
-                    Log.d(TAG, "response.body(): " + response.body().toString())
-                    code?.code = response.code()
-                    code?.message = response.message()
-
-                } else {
-                    Log.d(TAG, "통신 실패--> response is not successful")
-                }
-
-            }
-
-            override fun onFailure(call: Call<ResponseCode>, t: Throwable) {
-                Log.d(TAG, "registCampaign onFailure")
-                Log.d(TAG, t.message.toString())
-            }
-        })
-        return code
-
-
-    }
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun registCampaginByJson(campaign: Campaign): ResponseCode? {
         var code: ResponseCode? = null
         iRetrofit?.registCampaignByJsonApi(campaign)?.enqueue(object : Callback<ResponseCode> {
             override fun onResponse(call: Call<ResponseCode>, response: Response<ResponseCode>) {
+                Log.d("registCampaign", "response.body(): " + response.body().toString())
+                Log.d("registCampaign", "response.code(): " + response.code().toString())
 
                 if (response.isSuccessful) {
-                    Log.d(TAG, "response.body(): " + response.body().toString())
+
                     code?.code = response.code()
                     code?.message = response.message()
 
                 } else {
-                    Log.d(TAG, "통신 실패--> response is not successful")
+                    Log.d("registCampaign", "캠페인 등록 통신 실패--> response is not successful")
                 }
             }
 
             override fun onFailure(call: Call<ResponseCode>, t: Throwable) {
-                Log.d(TAG, "registCampaign onFailure")
-                Log.d(TAG, t.message.toString())
+                Log.d("registCampaign", "registCampaign onFailure")
+                Log.d("registCampaign", t.message.toString())
             }
         })
         return code
@@ -324,6 +294,7 @@ class RetrofitManager {
                     code?.code = response.code()
                     code?.message = response.message()
 
+
                 } else {
                     Log.d(TAG, "통신 실패--> response is not successful")
                     Log.d(TAG,code?.message.toString())
@@ -339,6 +310,120 @@ class RetrofitManager {
 
 
     }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun imageUpload(file: MultipartBody.Part): LiveData<String>? {
+        val imageLiveData:MutableLiveData<String> = MutableLiveData()
+        Log.d(TAG, "RequestBody(): " + RequestBody.toString())
+        iRetrofit?.imageUploadApi(file)?.enqueue(object : Callback<String> {
+            override fun onResponse(call: Call<String>, response: Response<String>) {
+                Log.d("img", "response.body(): " + response.body().toString())
+                Log.d("img","response.code()"+response.code())
+                if (response.isSuccessful) {
+                   imageLiveData.value=response.body()
+
+                } else {
+
+                    Log.d("img", "이미지 통신 실패")
+                }
+
+            }
+            override fun onFailure(call: Call<String>, t: Throwable) {
+                Log.d("img", "이미지통신 OnFailure")
+                Log.d("img", t.message.toString())
+                Log.d("img",t.stackTraceToString())
+            }
+        })
+        return imageLiveData
+    }
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun withDraw(campaignId:String, data:WithDrawData):MutableLiveData<ResponseCode>?{
+        val responseLiveData:MutableLiveData<ResponseCode> = MutableLiveData()
+
+        iRetrofit?.withDrawApi(campaignId = campaignId,data)?.enqueue(object :Callback<ResponseCode>{
+            override fun onResponse(call: Call<ResponseCode>, response: Response<ResponseCode>) {
+                Log.d(TAG,"withDrawApi: "+response.code().toString())
+                Log.d(TAG,"withDrawApi: "+response.body().toString())
+                if(response.isSuccessful){
+                    responseLiveData.value=response.body()
+                    Log.d(TAG,"withDrawApi is Success ")
+                }
+                else{
+                    Log.d(TAG,"withDrawApi is NOT Success ")
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseCode>, t: Throwable) {
+                Log.d(TAG,"withDrawApi is onFailure ")
+                t.stackTrace
+            }
+        })
+        return responseLiveData
+
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun exchange(data:ExchangeData):MutableLiveData<ExchangeResponseData>?{
+        var responseLivedData:MutableLiveData<ExchangeResponseData> = MutableLiveData()
+
+        iRetrofit2?.exchangeApi(data)?.enqueue(object :Callback<ExchangeResponseData>{
+            override fun onResponse(call: Call<ExchangeResponseData>, response: Response<ExchangeResponseData>) {
+                responseLivedData.value=response.body()
+                Log.d("NHResponse","onResponse 진입")
+                Log.d("NHResponse",response.body().toString())
+                Log.d("NHResponse",response.code().toString())
+                
+            }
+
+            override fun onFailure(call: Call<ExchangeResponseData>, t: Throwable) {
+                Log.d("NHResponse","onFailure 진입")
+                t.stackTrace
+            }
+        })
+        return responseLivedData
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun payBack(amount: String):MutableLiveData<ResponseCode>{
+        var responseLiveData:MutableLiveData<ResponseCode> = MutableLiveData()
+        iRetrofit?.payBackApi(amount)?.enqueue(object : Callback<ResponseCode>{
+            override fun onResponse(call: Call<ResponseCode>, response: Response<ResponseCode>) {
+
+                Log.d("tag1","payback ON Response")
+                responseLiveData.value=response.body()
+            }
+
+            override fun onFailure(call: Call<ResponseCode>, t: Throwable) {
+                t.stackTrace
+            }
+        })
+        return responseLiveData
+
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun getTxList(): MutableLiveData<List<TransactionForm>> {
+        Log.d(TAG, "getCampaignList() 실행")
+        val data = MutableLiveData<List<TransactionForm>>()
+
+        iRetrofit?.txApi()?.enqueue(object : Callback<List<TransactionForm>> {
+            override fun onResponse(call: Call<List<TransactionForm>>, response: Response<List<TransactionForm>>) {
+                Log.d(TAG, "getRecommList() onResponse 진입")
+                if (response.isSuccessful) {
+                    data.value = response.body()!!
+                }
+                Log.d(TAG, response.code().toString())
+            }
+
+            override fun onFailure(call: Call<List<TransactionForm>>, t: Throwable) {
+                Log.d(TAG, "getRecommList() onFailure()")
+                Log.d(TAG, t.stackTraceToString())
+                t.stackTrace
+            }
+        })
+        return data
+    }
+
 
 
 }

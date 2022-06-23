@@ -10,19 +10,20 @@ class ReceivedCookiesInterceptor:Interceptor {
 
 
     override fun intercept(chain: Interceptor.Chain): Response {
-        Log.d(TAG,"ReivedCookiesInterceptor intercept() ON")
+       // Log.d(TAG,"ReivedCookiesInterceptor intercept() ON")
         var originalResponse: Response=chain.proceed(chain.request())
 
         if(!originalResponse.headers("Set-Cookie").isEmpty()){
             var tmpCookie:String = originalResponse.headers("Set-Cookie").toString()
-            Log.d(TAG,"set-Cookie의 값: "+tmpCookie)
+           // Log.d(TAG,"set-Cookie의 값: "+tmpCookie)
             var cookie=tmpCookie.split(";").get(0)
             cookie = cookie.replace("[", "")
 
 
             MainActivity.getInstance()?.let {
                 MySharedPreferences.setUserCookie(it,cookie)
-                Log.d(TAG,"recievedinterceptor :${MySharedPreferences.getUserCookie(it)}~")}
+               // Log.d(TAG,"recievedinterceptor :${MySharedPreferences.getUserCookie(it)}~")
+            }
 
         }
         return originalResponse

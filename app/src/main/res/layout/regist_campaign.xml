@@ -96,16 +96,19 @@
                 android:id="@+id/cover_imageview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:adjustViewBounds="true"
                 android:maxWidth="200dp"
                 android:maxHeight="200dp"
                 android:src="@drawable/test8"
                 app:layout_constraintTop_toBottomOf="@+id/cover_image"></ImageView>
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/upload_btn"
                 android:layout_width="200dp"
                 android:layout_height="0dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/round_button"
                 android:onClick="onClick"
                 android:text="사진 선택"
                 android:textSize="12sp"
@@ -118,28 +121,32 @@
                 android:id="@+id/detail_image"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="커버 이미지 등록"
+                android:layout_marginTop="8dp"
+                android:text="상세 이미지 등록"
                 app:layout_constraintTop_toBottomOf="@+id/upload_btn"></TextView>
 
             <ImageView
                 android:id="@+id/detail_imageview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:adjustViewBounds="true"
                 android:maxWidth="200dp"
                 android:maxHeight="200dp"
                 android:src="@drawable/test8"
                 app:layout_constraintTop_toBottomOf="@+id/detail_image"></ImageView>
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/upload_btn2"
                 android:layout_width="200dp"
                 android:layout_height="0dp"
+                android:layout_marginTop="16dp"
                 android:onClick="onClick"
                 android:text="사진 선택"
+                android:background="@drawable/round_button"
                 android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_bias="0.497"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/detail_imageview" />
 
@@ -147,27 +154,42 @@
                 android:id="@+id/categories"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:text="카테고리 등록"
                 app:layout_constraintTop_toBottomOf="@id/upload_btn2"></TextView>
 
-            <EditText
-                android:id="@+id/edit_categories"
+            <TextView
+                android:id="@+id/categories_text"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/categories"></EditText>
+                android:layout_height="50dp"
+                android:layout_marginTop="8dp"
+                android:textSize="48sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/categories"></TextView>
+
 
             <Button
                 android:id="@+id/submit_btn"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="캠페인 등록하기"
-                app:layout_constraintTop_toBottomOf="@+id/edit_categories"></Button>
+                app:layout_constraintTop_toBottomOf="@+id/ca_btn">
+            </Button>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/ca_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="카테고리"
+                android:background="@drawable/round_button"
+                app:layout_constraintBottom_toTopOf="@id/submit_btn"
+                app:layout_constraintRight_toRightOf="@id/categories_text"
+                app:layout_constraintTop_toBottomOf="@+id/categories">
+            </androidx.appcompat.widget.AppCompatButton>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
     </ScrollView>
-
 
 </LinearLayout>
 </layout>

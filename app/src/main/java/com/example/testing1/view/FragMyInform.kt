@@ -5,6 +5,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.os.Build
 import android.os.Bundle
 import android.text.InputType
 import android.util.Log
@@ -13,8 +14,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
+import androidx.annotation.RequiresApi
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.testing1.MySharedPreferences
 import com.example.testing1.R
@@ -23,12 +27,7 @@ import com.example.testing1.databinding.FragmentMyInformBinding
 import com.example.testing1.viewModel.CampaignViewModel
 import com.example.testing1.viewModel.MemberViewModel
 import com.example.testing1.viewModel.ResponseViewModel
-import com.iamport.sdk.data.sdk.IamPortRequest
-import com.iamport.sdk.data.sdk.PayMethod
-import com.iamport.sdk.domain.core.Iamport
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+
 import retrofit2.Response
 import java.util.*
 
@@ -40,7 +39,6 @@ class FragMyInform : Fragment() {
     private val binding get() = mBinding!!
     private lateinit var memberViewModel: MemberViewModel
     private lateinit var logoutRespone:ResponseViewModel
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -55,6 +53,7 @@ class FragMyInform : Fragment() {
         mBinding=DataBindingUtil.inflate(inflater, R.layout.fragment_my_inform,container,false)
         Log.d(TAG,"onCreateView start and binding is inited")
 
+
         activity?.let{
             memberViewModel=ViewModelProvider(it).get(MemberViewModel::class.java)
             logoutRespone=ViewModelProvider(it).get(ResponseViewModel::class.java)
@@ -62,12 +61,15 @@ class FragMyInform : Fragment() {
             binding.lifecycleOwner=this
         }
 
+
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG,"onViewCreate start ")
+
         binding.logoutBtn.setOnClickListener{
 
             instance.logout()
@@ -76,10 +78,6 @@ class FragMyInform : Fragment() {
             startActivity(intent)
             Toast.makeText(requireContext(), "로그아웃", Toast.LENGTH_SHORT).show()
             getActivity()?.finish()
-
-
-
-
 
         }
 
@@ -95,21 +93,21 @@ class FragMyInform : Fragment() {
         super.onStart()
         Log.d(TAG,"onStart start ")
         binding.chargeBtn.setOnClickListener{
-            var edit:EditText= EditText(context)
-            edit.setInputType(InputType.TYPE_CLASS_NUMBER)
-            AlertDialog.Builder(context)
-                    .setTitle("결제하기")
-                    .setMessage("결제금액을 입력해주세요.")
-                    .setView(edit)
-                    .setPositiveButton("결제하기"){dialog,which ->
-                        chargeMoney(edit.text.toString())
-                    }
-                    .setNegativeButton("x") { dialog, _ -> dialog.dismiss() }
-                    .show()
+            var intent=Intent(activity, PayActivity::class.java)
+            startActivity(intent)
 
         }
         binding.myinformBtn.setOnClickListener{
             var intent=Intent(activity, MyData::class.java)
+            startActivity(intent)
+        }
+        binding.requestChange.setOnClickListener{
+            var intent=Intent(activity,ExchangeActivity::class.java)
+            intent.putExtra("point",memberViewModel.member?.value?.pointAmount.toString())
+            startActivity(intent)
+        }
+        binding.transactionHistory.setOnClickListener{
+            var intent=Intent(activity,MyTransaction::class.java)
             startActivity(intent)
         }
 
@@ -119,23 +117,12 @@ class FragMyInform : Fragment() {
         mBinding = null
         super.onDestroyView()
     }
-    private fun onClickPayment(_amount:String) {
-
-        val request = IamPortRequest(
-                pg = "kakopay",              // PG 사
-                pay_method = PayMethod.trans.name,                   // 결제수단
-                name = "충전",                         // 주문명
-                merchant_uid = memberViewModel.member!!.value!!.email+Date().time,                 // 주문번호
-                amount = _amount,                            // 결제금액
-                buyer_name = memberViewModel.member!!.value!!.name
-        )
-        // 결제호출
 
 
-    }
-    fun chargeMoney(amount:String){
-        instance.charge(amount)
-    }
+
+
+
+
 
 
 

@@ -51,15 +51,15 @@ object MySharedPreferences {
         val prefs : SharedPreferences = context.getSharedPreferences(MY_ACCOUNT, Context.MODE_PRIVATE)
         return prefs.getString("MY_NAME", "").toString()
     }
-    fun setUserPhone(context: Context,input:String){
+    fun setUserWallet(context: Context,input:String){
         val prefs : SharedPreferences = context.getSharedPreferences(MY_ACCOUNT, Context.MODE_PRIVATE)
         val editor : SharedPreferences.Editor = prefs.edit()
-        editor.putString("MY_PHONE", input)
+        editor.putString("MY_WALLET", input)
         editor.commit()
     }
-    fun getUserPhone(context:Context):String{
+    fun getUserWallet(context:Context):String{
         val prefs : SharedPreferences = context.getSharedPreferences(MY_ACCOUNT, Context.MODE_PRIVATE)
-        return prefs.getString("MY_PHONE", "").toString()
+        return prefs.getString("MY_WALLET", "").toString()
     }
     fun setUserMode(context: Context,input:String){
         val prefs : SharedPreferences = context.getSharedPreferences(MY_ACCOUNT, Context.MODE_PRIVATE)

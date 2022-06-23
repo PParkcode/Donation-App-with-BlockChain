@@ -9,7 +9,9 @@ data class MemberData(var email:String="",
                       var nickname:String="",
                       var memberType:String="",  //USER, CHARITY
                       var pointAmount:Int=0,
-                      var myHeart:List<Campaign>?=null
+                      var myHeart:List<Campaign>?=null,
+                      var profilePhotoName:String="",
+                      var walletId:String=""
                       )
 {
     /*

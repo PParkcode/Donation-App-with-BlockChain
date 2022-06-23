@@ -63,7 +63,7 @@ class Register :AppCompatActivity(){
 
             val memberData:MemberData= MemberData(binding.editId.text.toString(),
                 binding.editPwd.text.toString(),binding.editName.text.toString(),
-                binding.editPhone.text.toString(),binding.editNick.text.toString(),mode,0,null)
+                binding.editPhone.text.toString(),binding.editNick.text.toString(),mode,0,null,"/profilephoto.jpg")
 
              val registLiveData: MutableLiveData<Int>? = RetrofitManager().registCall(memberData)
             registLiveData?.observe(this, Observer {

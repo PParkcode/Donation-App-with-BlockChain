@@ -23,8 +23,11 @@ object ImageBindingAdapter {
                 //.addHeader("Authorization", "your basic authentication string.")
                 .addHeader("Cookie", preferences.toString())
 
+        //var pathName=path?.split("?fileName=").toString()
 
-        val baseUrl = "http://10.0.2.2:8080"
+
+        val baseUrl = "http://10.0.2.2:8080/download?fileName="
+       // Log.d("img123",baseUrl+pathName[1])
         val glideUrl = GlideUrl(baseUrl+path, builder.build())
         Glide.with(imageView.context).load(glideUrl).error(R.drawable.test9).into(imageView)
     }

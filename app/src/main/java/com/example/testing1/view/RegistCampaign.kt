@@ -1,8 +1,8 @@
 package com.example.testing1.view
 
+import android.app.DatePickerDialog.OnDateSetListener
 import android.content.Context
 import android.content.Intent
-import android.content.res.Resources
 import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -11,26 +11,38 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Base64
-import android.util.Base64.NO_WRAP
 import android.util.Log
+import android.view.MenuItem
+import android.view.View
+import android.widget.EditText
+import android.widget.PopupMenu
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.IntegerRes
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.example.testing1.R
 import com.example.testing1.Retrofit.RetrofitManager.Companion.instance
 import com.example.testing1.databinding.RegistCampaignBinding
 import com.example.testing1.model.Campaign
 import kotlinx.android.synthetic.main.regist_campaign.*
+import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
+import okio.BufferedSink
 import java.io.ByteArrayOutputStream
 import java.io.File
-import java.io.InputStream
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.util.*
+import kotlin.collections.HashMap
 
 
 class RegistCampaign:AppCompatActivity() {
@@ -39,7 +51,15 @@ class RegistCampaign:AppCompatActivity() {
     lateinit var detailImg:MultipartBody.Part
     lateinit var coverBitmap:Bitmap
     lateinit var detailBitmap:Bitmap
+
+
+
+    var coverUrl:LiveData<String>? =MutableLiveData<String>()
+    var detailUrl:LiveData<String>? = MutableLiveData<String>()
     @RequiresApi(Build.VERSION_CODES.O)
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding= DataBindingUtil.setContentView<RegistCampaignBinding>(this, R.layout.regist_campaign)
@@ -48,8 +68,17 @@ class RegistCampaign:AppCompatActivity() {
         actionBar=supportActionBar
         actionBar?.hide()
         var intent = getIntent()
-
        var charityName=intent.getStringExtra("name")
+
+
+
+
+        coverUrl?.observe(this, androidx.lifecycle.Observer {
+            Log.d("img","coverUrl 변화 감지!!"+it.toString())
+        })
+        detailUrl?.observe(this, androidx.lifecycle.Observer {
+            Log.d("img","detailUrl 변화 감지!!"+it.toString())
+        })
 
        var getCoverResult= registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
            if(it.resultCode== RESULT_OK){
@@ -57,12 +86,16 @@ class RegistCampaign:AppCompatActivity() {
 
                val file = File(absolutelyPath(imagePath, this))
                val requestFile = file.asRequestBody("image/*".toMediaTypeOrNull())
-               coverImg = MultipartBody.Part.createFormData("coverImagePath", file.name, requestFile)
-
+               coverImg = MultipartBody.Part.createFormData("file", file.name, requestFile)
+               Log.d("img",coverImg.toString())
+               coverUrl = instance.imageUpload(coverImg)
+               Log.d("img","coverUrl"+detailUrl.toString())
+               Log.d("img", "file.name: ${file.name} \nrequestFile: ${requestFile}")
 
                try{
                    coverBitmap= MediaStore.Images.Media.getBitmap(contentResolver, imagePath)
                    binding.coverImageview.setImageBitmap(coverBitmap)
+
                }catch (e: Exception){
                    e.printStackTrace()
                }
@@ -74,28 +107,12 @@ class RegistCampaign:AppCompatActivity() {
 
                 val file = File(absolutelyPath(imagePath, this))
                 val requestFile = file.asRequestBody("image/*".toMediaTypeOrNull())
-                detailImg = MultipartBody.Part.createFormData("detailImagePath", file.name, requestFile)
-                Log.d("tag1","file.name: ${file.name} \nrequestFile: ${requestFile}")
+                detailImg = MultipartBody.Part.createFormData("file", file.name, requestFile)
+                Log.d("img",detailImg.toString())
+                detailUrl=instance.imageUpload(detailImg)
+                Log.d("img","detailUrl"+detailUrl.toString())
+                Log.d("img", "file.name: ${file.name} \nrequestFile: ${requestFile}")
 
-                /*
-                //json 이미지 압축 통신 방법
-                val ins: InputStream? = imagePath?.let {
-                    applicationContext.contentResolver.openInputStream(
-                            it
-                    )
-                }
-                val img: Bitmap = BitmapFactory.decodeStream(ins)
-                ins?.close()
-                val resized = Bitmap.createScaledBitmap(img, 256, 256, true)
-                val byteArrayOutputStream = ByteArrayOutputStream()
-                resized.compress(Bitmap.CompressFormat.JPEG, 60, byteArrayOutputStream)
-                val byteArray: ByteArray = byteArrayOutputStream.toByteArray()
-                val outStream = ByteArrayOutputStream()
-                val res: Resources = resources
-                var profileImageBase64 = Base64.encodeToString(byteArray, NO_WRAP)
-                // 여기까지 인코딩 끝
-
-                 */
 
                 try{
                     detailBitmap= MediaStore.Images.Media.getBitmap(contentResolver, imagePath)
@@ -105,58 +122,55 @@ class RegistCampaign:AppCompatActivity() {
                 }
             }
         }
-        binding.deadlineDatePicker.setOnDateChangedListener{view,year,month,dayOfMonth->
-
-        }
 
         binding.uploadBtn.setOnClickListener{
             val intent=Intent(Intent.ACTION_PICK)
             intent.setType("image/*")
             getCoverResult.launch(intent)
+
         }
         binding.uploadBtn2.setOnClickListener{
             val intent=Intent(Intent.ACTION_PICK)
             intent.setType("image/*")
             getDetailResult.launch(intent)
+
         }
+
+        binding.caBtn.setOnClickListener{
+            var popupMenu=PopupMenu(applicationContext,it)
+            menuInflater?.inflate(R.menu.category_menu,popupMenu.menu)
+
+            var listener=PopupMenuListener()
+            popupMenu.setOnMenuItemClickListener(listener)
+            popupMenu.show()
+        }
+
+
+
 
         binding.submitBtn.setOnClickListener{
             var campName=binding.editCampaignTitle.text.toString()
             var campDes=binding.editCampaignDes.text.toString()
             var goal=binding.editGoal.text.toString().toInt()
-            Log.d("tag1","goal: "+goal)
-            var deadline=binding.deadlineDatePicker.toString()
-            Log.d("tag1","deadline: "+deadline)
-            var categories=binding.editCategories.text.toString()
 
-            var charityNameBody:RequestBody=charityName!!.toRequestBody("text/plain".toMediaTypeOrNull())
-            var nameBody:RequestBody= campName.toRequestBody("text/plain".toMediaTypeOrNull())
-            var desBody:RequestBody= campDes.toRequestBody("text/plain".toMediaTypeOrNull())
-            //var goalBody:RequestBody= goal.toRequestBody("text/plain".toMediaTypeOrNull())
-            var deadlineBody:RequestBody=deadline.toRequestBody("text/plain".toMediaTypeOrNull())
-            var categoriesBody:RequestBody=categories.toRequestBody("text/plain".toMediaTypeOrNull())
-            val requestMap: HashMap<String, RequestBody> = HashMap()
-            requestMap["campaignName"] = nameBody
-            requestMap["charityName"] = charityNameBody
-            requestMap["deadline"] = deadlineBody
-           // requestMap["goalAmount"]=goalBody
-            requestMap["categories"]=categoriesBody
+            var y=binding.deadlineDatePicker.year
+            var m=binding.deadlineDatePicker.month+1
+            var d=binding.deadlineDatePicker.dayOfMonth
 
-            var coverImg=BitmapToString(coverBitmap)
-            var detailImg=BitmapToString(detailBitmap)
+            var date=LocalDate.of(y,m,d)
 
-            var campaign: Campaign =Campaign(0,"",campName,charityName,null,0,goal,null,"","","",campDes)
+            Log.d("date1", "date: " + date)
 
 
+            var campaign: Campaign =Campaign(0, "", campName, charityName.toString(), date.toString(), 0, goal, null, coverUrl?.value.toString(), detailUrl?.value.toString(), "", campDes)
 
             instance.registCampaginByJson(campaign)
 
-
-            //instance.registCampaign(requestMap, coverImg, detailImg)
             var intent=Intent(applicationContext, MainNav::class.java)
             startActivity(intent)
         }
     }
+
 
     // 절대경로 변환
 
@@ -168,31 +182,31 @@ class RegistCampaign:AppCompatActivity() {
         var result = c?.getString(index!!)
         return result!!
     }
-
-    fun BitmapToString(bitmap: Bitmap): String {
-        val baos =
-            ByteArrayOutputStream() //바이트 배열을 차례대로 읽어 들이기위한 ByteArrayOutputStream클래스 선언
-        bitmap.compress(Bitmap.CompressFormat.PNG, 10, baos) //bitmap을 압축 (숫자 70은 70%로 압축한다는 뜻)
-        val bytes = baos.toByteArray() //해당 bitmap을 byte배열로 바꿔준다.
-        return Base64.encodeToString(bytes, Base64.DEFAULT) //Base 64 방식으로byte 배열을 String으로 변환
-        //String을 retrurn
-    }
-    fun StringToBitmap(encodedString: String?): Bitmap? {
-        return try {
-            val encodeByte: ByteArray = Base64.decode(
-                encodedString,
-                Base64.DEFAULT
-            ) // String 화 된 이미지를  base64방식으로 인코딩하여 byte배열을 만듬
-            BitmapFactory.decodeByteArray(
-                encodeByte,
-                0,
-                encodeByte.size
-            ) //byte배열을 bitmapfactory 메소드를 이용하여 비트맵으로 바꿔준다.
-            //만들어진 bitmap을 return
-        } catch (e: Exception) {
-            e.message
-            null
+    inner class BitmapRequestBody(private val bitmap: Bitmap) : RequestBody() {
+        override fun contentType(): MediaType = "image/jpeg".toMediaType()
+        override fun writeTo(sink: BufferedSink) {
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 99, sink.outputStream())
         }
     }
+    inner class PopupMenuListener:PopupMenu.OnMenuItemClickListener{
+        override fun onMenuItemClick(item: MenuItem?): Boolean {
+            when(item?.itemId){
+                R.id.ca1 ->{
+                    binding.categoriesText.text=binding.categoriesText.text.toString() +"아동,"
+                }
+                R.id.ca2 ->{
+                    binding.categoriesText.text=binding.categoriesText.text.toString()+"청년,"
+                }
+
+
+                R.id.clear->{
+                    binding.categoriesText.text=""
+                }
+            }
+            return false
+
+        }
+    }
+
 
 }

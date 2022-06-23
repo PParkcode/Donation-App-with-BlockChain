@@ -29,14 +29,7 @@ class MoreCampaignActivity:AppCompatActivity() {
         actionBar=supportActionBar
         actionBar?.hide()
 
-        /*
-        campaignViewModel = ViewModelProvider(this).get(CampaignViewModel::class.java)
 
-        campaignViewModel.campaigns?.observe(this, Observer {
-            Log.d(TAG, "MoreCampaignActivity 데이터 변경 ")
-        })
-
-         */
         binding.lifecycleOwner = this
         binding.viewModel = CampaignViewModel()
         setRecyclerView()

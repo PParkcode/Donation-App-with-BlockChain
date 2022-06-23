@@ -1,6 +1,8 @@
 package com.example.testing1.viewModel
 
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -13,8 +15,10 @@ private val TAG="tag1"
 
 class CampaignViewModel:ViewModel() {
     //private var _campaigns:MutableLiveData<List<Campaign>>? = MutableLiveData()
+    @RequiresApi(Build.VERSION_CODES.O)
     private val _campaigns=instance.getCampaignList()
     val campaigns : LiveData<List<Campaign>>
+        @RequiresApi(Build.VERSION_CODES.O)
         get()=_campaigns
 
 

@@ -7,14 +7,15 @@ data class Campaign(var campaignId:Int=0,
                     var subject:String="",
                     var campaignName:String="",
                     var charityName:String="",
-                    var deadline:LocalDate?=null,
+                    var deadline:String="",
                     var currentAmount:Int=0,
                     var goalAmount:Int=0,
                     var categories:List<String>? =null,
                     var coverImagePath:String="",
                     var detailImagePath:String="",
                     var reviewImagePath:String="",
-                    var description:String=""
+                    var description:String="",
+                    var walletId:String=""
 
                     ){
 }

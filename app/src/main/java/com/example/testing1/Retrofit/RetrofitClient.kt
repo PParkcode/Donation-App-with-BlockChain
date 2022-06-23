@@ -26,8 +26,8 @@ object RetrofitClient {
         if(retrofitClient ==null){
 
 
-            val httpLoggingInterceptor=HttpLoggingInterceptor()
-            httpLoggingInterceptor.level=HttpLoggingInterceptor.Level.BODY
+            //val httpLoggingInterceptor=HttpLoggingInterceptor()
+           //httpLoggingInterceptor.level=HttpLoggingInterceptor.Level.BODY
             val client=OkHttpClient.Builder()
                 .cookieJar(JavaNetCookieJar(CookieManager()))
                 .addInterceptor(AddCookiesInterceptor())
@@ -38,6 +38,7 @@ object RetrofitClient {
             val gson = GsonBuilder()
                     .registerTypeAdapter(LocalDate::class.java, JsonDeserializer<LocalDate> { json: JsonElement, typeOfT: Type?, context: JsonDeserializationContext?
                         -> LocalDate.parse(json.asString, DateTimeFormatter.ofPattern("yyyy-MM-dd")) } as JsonDeserializer<LocalDate>?)
+                    .setLenient()
                     .create()
 
 
@@ -52,9 +53,41 @@ object RetrofitClient {
         return retrofitClient
     }
 
+}
+
+object RetrofitClient2 {
+
+    private var retrofitClient2:Retrofit?=null
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun getClient(baseUrl: String):Retrofit?{
+        if(retrofitClient2 ==null){
+
+
+            //val httpLoggingInterceptor=HttpLoggingInterceptor()
+            //httpLoggingInterceptor.level=HttpLoggingInterceptor.Level.BODY
+            val client=OkHttpClient.Builder()
+
+                    //.addInterceptor(httpLoggingInterceptor)
+                    .build()
+
+            val gson = GsonBuilder()
+                    .registerTypeAdapter(LocalDate::class.java, JsonDeserializer<LocalDate> { json: JsonElement, typeOfT: Type?, context: JsonDeserializationContext?
+                        -> LocalDate.parse(json.asString, DateTimeFormatter.ofPattern("yyyy-MM-dd")) } as JsonDeserializer<LocalDate>?)
+                    .setLenient()
+                    .create()
 
 
 
 
+            retrofitClient2 =Retrofit.Builder()
+                    .baseUrl(baseUrl)
+                    .client(client)
+                    .addConverterFactory(GsonConverterFactory.create(gson))
+                    .build()
+        }
+        return retrofitClient2
+    }
 
 }
+

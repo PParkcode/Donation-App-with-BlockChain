@@ -59,4 +59,20 @@ interface IRetrofit {
 
     @GET("api/user/logout")
     fun logoutApi():Call<ResponseCode>
+
+    @Multipart
+    @POST("upload")
+    fun imageUploadApi(@Part file: MultipartBody.Part):Call<String>
+
+    @POST("api/charity/withdraw/{campaignId}")
+    fun withDrawApi(@Path("campaignId") campaignId:String, @Body() data: WithDrawData):Call<ResponseCode>
+
+    @POST("ReceivedTransferOtherBank.nh")
+    fun exchangeApi(@Body() data:ExchangeData):Call<ExchangeResponseData>
+
+    @GET("api/user/payback")
+    fun payBackApi(@Query("amount") amount:String):Call<ResponseCode>
+
+    @GET("api/user/tx")
+    fun txApi():Call<List<TransactionForm>>
 }

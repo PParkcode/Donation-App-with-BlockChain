@@ -18,6 +18,7 @@ class MemberViewModel:ViewModel() {
         get()=_member
 
     @RequiresApi(Build.VERSION_CODES.O)
+
     fun getMyDataResponse() {
 
        _member= RetrofitManager.instance.getMyData()

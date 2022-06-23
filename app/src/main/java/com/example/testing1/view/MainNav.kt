@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -20,12 +21,13 @@ import com.example.testing1.databinding.MainNavBinding
 import com.example.testing1.view.SearchActivity
 import com.example.testing1.viewModel.MemberViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.iamport.sdk.domain.core.Iamport
+
 
 private val TAG="tag1"
 class MainNav:AppCompatActivity() {
     private lateinit var binding: MainNavBinding
     private val memberViewModel by viewModels<MemberViewModel>()
+    var waitTime = 0L
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState:Bundle?){
@@ -34,13 +36,27 @@ class MainNav:AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding=DataBindingUtil.setContentView<MainNavBinding>(this,R.layout.main_nav)
         setContentView(binding.root)
-        Iamport.init(this)
+
+        memberViewModel._member=instance.getMyData()
+        Log.d(TAG,"getMyData 실행")
+
 
         binding.viewModel=memberViewModel
         binding.lifecycleOwner=this
 
-        memberViewModel._member=instance.getMyData()
-        Log.d(TAG,"getMyData 실행")
+        memberViewModel._member?.observe(this, Observer {
+            if(MySharedPreferences.getUserName(this)==""){
+                MySharedPreferences.setUserName(this,it.name)
+            }
+            if(MySharedPreferences.getUserWallet(this)==""){
+                MySharedPreferences.setUserWallet(this,it.walletId)
+            }
+
+        })
+
+
+
+
 
 
 
@@ -56,10 +72,12 @@ class MainNav:AppCompatActivity() {
                 R.id.tab_about ->{
                     val fragAbout=FragAbout()
                     supportFragmentManager.beginTransaction().replace(R.id.fl_container,fragAbout).commit()
+                    title="소개"
                 }
                 R.id.tab_myInform ->{
                     val fragMyInform=FragMyInform()
                     supportFragmentManager.beginTransaction().replace(R.id.fl_container,fragMyInform).commit()
+                    title="내 정보"
                 }
             }
             true
@@ -67,6 +85,15 @@ class MainNav:AppCompatActivity() {
             selectedItemId= R.id.tab_share
         }
 
+    }
+
+    override fun onBackPressed() {
+        if(System.currentTimeMillis() - waitTime >=1500 ) {
+            waitTime = System.currentTimeMillis()
+            Toast.makeText(this,"뒤로가기 버튼을 한번 더 누르면 종료됩니다.",Toast.LENGTH_SHORT).show()
+        } else {
+            finish() // 액티비티 종료
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -99,7 +126,14 @@ class MainNav:AppCompatActivity() {
                 intent.putExtra("name",memberViewModel.member!!.value!!.name)
                 startActivity(intent)
             }
+            R.id.refresh_item->{
+                intent = getIntent()
+                finish()
+                startActivity(intent)
+            }
         }
         return super.onOptionsItemSelected(item)
     }
+
+
 }

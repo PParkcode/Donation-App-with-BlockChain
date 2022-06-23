@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.testing1.MoreItemBinding
 import com.example.testing1.R
-//import com.example.testing1.databinding.MoreItemBinding
+
 import com.example.testing1.model.Campaign
 
 

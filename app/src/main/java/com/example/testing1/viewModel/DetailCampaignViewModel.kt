@@ -1,6 +1,8 @@
 package com.example.testing1.viewModel
 
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -18,22 +20,13 @@ class DetailCampaignViewModel:ViewModel() {
     val campaignData: LiveData<Campaign>?
         get()=_campaignData
 
-    var dDay:MutableLiveData<Int>?= MutableLiveData()
-
-
-    fun getMyDataResponse(campaignId:String) {
-
-        _campaignData= RetrofitManager.instance.getCampaignDetail(campaignId)
-        Log.d(TAG,"viewModel에서 받은 데이터: "+campaignData?.value.toString())
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun getDetailCampaign(id: String){
+        _campaignData=instance.getCampaignDetail(id)
+        //return campaignData
     }
 
 
-    fun Date.dateToString(format: String, local : Locale = Locale.getDefault()): String{
-        val formatter = SimpleDateFormat(format, local)
-        return formatter.format(this)
-    }
 
-    fun currentDate(): Date {
-        return Calendar.getInstance().time
-    }
+
 }

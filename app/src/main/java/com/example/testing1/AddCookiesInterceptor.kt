@@ -15,11 +15,11 @@ class AddCookiesInterceptor: Interceptor {
         var builder: Request.Builder= chain.request().newBuilder()
 
         var preferences: String? = MainActivity?.getInstance()?.let { MySharedPreferences.getUserCookie(it) }
-        Log.d(TAG,"cookie_value: ${preferences}")
+       // Log.d(TAG,"cookie_value: ${preferences}")
 
         if (preferences != null) {
-            Log.d(TAG,"preferences가 null이 아니므로 addHeader()실행")
-            Log.d(TAG,"쿠키 값: "+preferences)
+           // Log.d(TAG,"preferences가 null이 아니므로 addHeader()실행")
+           // Log.d(TAG,"쿠키 값: "+preferences)
             builder.addHeader("Cookie",preferences)
         };
 

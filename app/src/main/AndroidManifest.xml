@@ -6,8 +6,6 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
-
-
     <application
 
         android:allowBackup="true"
@@ -34,6 +32,13 @@
         <activity android:name=".view.DetailCampaign"></activity>
         <activity android:name=".view.RegistCampaign"></activity>
         <activity android:name=".view.MyData"></activity>
+        <activity android:name=".view.PayActivity"></activity>
+        <activity android:name=".view.WithDrawForm"></activity>
+        <activity android:name=".view.DonateActivity"></activity>
+        <activity android:name=".view.ExchangeActivity"></activity>
+        <activity android:name=".view.RequestListActivity"></activity>
+        <activity android:name=".view.ExchangeActivity2"></activity>
+        <activity android:name=".view.MyTransaction"></activity>
 
     </application>
 

@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">testing1</string>
     <string name="regist_title"><strong>회원가입</strong></string>
-    <string name="regist_id"><strong>아이디</strong></string>
+    <string name="regist_id"><strong>이메일</strong></string>
     <string name="regist_pwd"><strong>비밀번호</strong></string>
     <string name="regist_pwd2"><strong>비밀번호 확인</strong></string>
     <string name="regist_name"><strong>이름</strong></string>
@@ -11,6 +11,9 @@
     <string name="regist_birth"><strong>생년월일</strong></string>
     <string name="regist_sex"><strong>성별</strong></string>
     <string name="regist_nick"><strong>닉네임</strong></string>
+    <string name="normalmode">돌아가기</string>
+    <string name="ADMIN">ADMIN</string>
+    <string name="CHARITY">CHARITY</string>
     <string name="regist_campaign"><strong>캠페인 등록</strong></string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

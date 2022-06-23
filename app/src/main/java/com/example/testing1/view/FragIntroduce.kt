@@ -20,6 +20,7 @@ class FragIntroduce: Fragment() {
 
     private lateinit var campaignViewModel: DetailCampaignViewModel
 
+
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?):
