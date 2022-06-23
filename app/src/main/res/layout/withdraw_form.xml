@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+
+    </data>
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="15dp"
+    android:layout_marginRight="15dp"
+    android:layout_marginBottom="10dp"
+    android:layout_marginTop="30dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="후원 금액의 사용 목적을\n자세히 입력해주세요"
+        android:textStyle="bold"
+        android:textSize="30sp"
+        android:id="@+id/purpose_txt"
+        app:layout_constraintTop_toTopOf="parent">
+    </TextView>
+
+    <EditText
+        android:id="@+id/purpose_edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+
+        android:lines="15"
+        android:hint="자세히 입력해주세요"
+        app:layout_constraintTop_toBottomOf="@+id/purpose_txt"
+        >
+    </EditText>
+
+
+    <!--
+    <TextView
+        android:id="@+id/point_txt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="84dp"
+        android:text="포인트를 받습니다"
+        android:textSize="30dp"
+        app:layout_constraintBottom_toTopOf="@+id/submit_btn"
+        tools:layout_editor_absoluteX="-16dp">
+    </TextView>
+    -->
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/submit_btn"
+       app:layout_constraintTop_toBottomOf="@+id/purpose_edit"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/round_button"
+        android:text="포인트 받기">
+    </Button>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
