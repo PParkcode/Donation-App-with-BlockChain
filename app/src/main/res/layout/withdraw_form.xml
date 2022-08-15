@@ -19,9 +19,9 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="후원 금액의 사용 목적을\n자세히 입력해주세요"
+        android:text="후원 금액의 사용 목적을 입력하시고 \n관련 영수증 혹은 증빙 서류를 제출해주세요"
         android:textStyle="bold"
-        android:textSize="30sp"
+        android:textSize="18sp"
         android:id="@+id/purpose_txt"
         app:layout_constraintTop_toTopOf="parent">
     </TextView>
@@ -31,35 +31,69 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
-
         android:lines="15"
         android:hint="자세히 입력해주세요"
         app:layout_constraintTop_toBottomOf="@+id/purpose_txt"
         >
     </EditText>
 
-
-    <!--
-    <TextView
-        android:id="@+id/point_txt"
+    <RadioGroup
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="84dp"
-        android:text="포인트를 받습니다"
-        android:textSize="30dp"
-        app:layout_constraintBottom_toTopOf="@+id/submit_btn"
-        tools:layout_editor_absoluteX="-16dp">
-    </TextView>
-    -->
+        android:id="@+id/radio_group"
+        android:orientation="horizontal"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/purpose_edit">
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/img_btn"
+            android:layout_marginRight="18dp"
+            android:checked="true"
+            android:text="이미지 파일">
+        </RadioButton>
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/pdf_btn"
+            android:layout_marginLeft="18dp"
+            android:text="PDF 파일">
+        </RadioButton>
+
+    </RadioGroup>
+
+
+    <TextView
+        android:id="@+id/file_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="파일을 첨부해주세요"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/radio_group"></TextView>
 
     <Button
+        android:id="@+id/input_file"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="첨부하기"
+        android:textSize="12sp"
+        android:minHeight="0dp"
+        android:minWidth="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/file_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/file_name">
+    </Button>
+
+    <Button
+        android:id="@+id/submit_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/submit_btn"
-       app:layout_constraintTop_toBottomOf="@+id/purpose_edit"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/round_button"
-        android:text="포인트 받기">
+        android:text="포인트 받기"
+        app:layout_constraintTop_toBottomOf="@+id/file_name"
+        tools:layout_editor_absoluteX="0dp">
     </Button>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -403,7 +403,7 @@ class RetrofitManager {
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun getTxList(): MutableLiveData<List<TransactionForm>> {
-        Log.d(TAG, "getCampaignList() 실행")
+
         val data = MutableLiveData<List<TransactionForm>>()
 
         iRetrofit?.txApi()?.enqueue(object : Callback<List<TransactionForm>> {
@@ -417,6 +417,51 @@ class RetrofitManager {
 
             override fun onFailure(call: Call<List<TransactionForm>>, t: Throwable) {
                 Log.d(TAG, "getRecommList() onFailure()")
+                Log.d(TAG, t.stackTraceToString())
+                t.stackTrace
+            }
+        })
+        return data
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun getMyCampaign():MutableLiveData<List<Campaign>>{
+        val data=MutableLiveData<List<Campaign>>()
+
+        iRetrofit?.getMyCampaignApi()?.enqueue(object : Callback<List<Campaign>>{
+            override fun onResponse(call: Call<List<Campaign>>, response: Response<List<Campaign>>) {
+                if (response.isSuccessful) {
+                    data.value = response.body()!!
+                }
+                Log.d(TAG, response.code().toString())
+            }
+
+            override fun onFailure(call: Call<List<Campaign>>, t: Throwable) {
+                Log.d(TAG, "getMyCampList() onFailure()")
+                Log.d(TAG, t.stackTraceToString())
+                t.stackTrace
+            }
+        })
+
+        return data
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun getHistory(campaignId: String):MutableLiveData<List<WithDrawData>>{
+        val data=MutableLiveData<List<WithDrawData>>()
+
+        iRetrofit?.getHistoryApi(campaignId)?.enqueue(object: Callback<List<WithDrawData>>{
+
+            override fun onResponse(call: Call<List<WithDrawData>>, response: Response<List<WithDrawData>>) {
+                if (response.isSuccessful) {
+                    data.value = response.body()!!
+                }
+                Log.d(TAG, response.code().toString())
+                Log.d("history1",response.body().toString())
+            }
+
+            override fun onFailure(call: Call<List<WithDrawData>>, t: Throwable) {
+                Log.d(TAG, "getHistory onFailure()")
                 Log.d(TAG, t.stackTraceToString())
                 t.stackTrace
             }

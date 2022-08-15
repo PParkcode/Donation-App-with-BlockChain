@@ -91,15 +91,6 @@ class FragShare : Fragment() {
          super.onDestroyView() }
 
 
-    /*
-    private fun getRecommList(): ArrayList<Int> { // ArrayList가 아닌 retrofit에서 받아온 코드로 수정
-        return arrayListOf<Int>(R.drawable.test5, R.drawable.test6, R.drawable.test7)
-    }
-
-    private fun getList(): MutableLiveData<List<Campaign>>{
-        return instance.getCampaignList()
-    }
-     */
 
     private fun setViewPager() {
 

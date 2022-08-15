@@ -21,23 +21,26 @@
             android:text="충전금액을 입력해주세요"
             android:textSize="30sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"></TextView>
+            app:layout_constraintTop_toTopOf="parent">
+        </TextView>
 
         <EditText
             android:id="@+id/edit_amount"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="52dp"
             android:hint="1000원 이상의 금액을 입력해주세요"
             android:inputType="number"
+            android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/charge_txt"
-            app:layout_constraintTop_toBottomOf="@+id/charge_txt"></EditText>
+            app:layout_constraintTop_toBottomOf="@+id/charge_txt">
+        </EditText>
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/button_first"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="52dp"
             android:gravity="center"
             android:text="포인트 충전"
             android:background="@color/secondary_color"
@@ -46,8 +49,9 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edit_amount"
-            app:layout_constraintVertical_bias="0.496"></androidx.appcompat.widget.AppCompatButton>
+
+            app:layout_constraintVertical_bias="0.496">
+        </androidx.appcompat.widget.AppCompatButton>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

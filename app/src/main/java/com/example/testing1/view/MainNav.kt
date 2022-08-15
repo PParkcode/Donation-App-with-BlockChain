@@ -56,12 +56,6 @@ class MainNav:AppCompatActivity() {
 
 
 
-
-
-
-
-
-
         binding.bnvMain.run{setOnNavigationItemSelectedListener { //menu에서 설정한 각 아이템의 id를 통해서 적절한 fragment로 이동동
            when(it.itemId){
                 R.id.tab_share ->{

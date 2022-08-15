@@ -43,7 +43,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="35dp"
                 android:text="@{recommCampaign.subject}"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textSize="25dp"
                 app:layout_constraintBottom_toTopOf="@+id/charity_txt"
                 app:layout_constraintStart_toStartOf="parent">
@@ -56,7 +56,7 @@
                 android:layout_marginBottom="25dp"
                 android:text="@{recommCampaign.charityName}"
                 android:textSize="18dp"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 app:layout_constraintBottom_toTopOf="@+id/dDay_txt"
                 app:layout_constraintStart_toStartOf="parent">
             </TextView>
@@ -67,7 +67,7 @@
                 android:layout_height="wrap_content"
                 android:text="@{recommCampaign.deadline+`까지`}"
                 android:visibility="invisible"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textSize="22dp"
                 app:layout_constraintBottom_toTopOf="@+id/progressBar"
                 app:layout_constraintStart_toStartOf="@+id/progressBar">
@@ -80,7 +80,7 @@
                 android:layout_height="wrap_content"
                 android:max="100"
                 android:progress="@{recommCampaign.currentAmount*100/recommCampaign.goalAmount}"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 app:layout_constraintBottom_toTopOf="@+id/currentAmount_txt"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent">
@@ -89,7 +89,7 @@
             <TextView
                 android:id="@+id/currentAmount_txt"
                 android:layout_width="wrap_content"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:layout_height="wrap_content"
                 android:text="@{recommCampaign.currentAmount+`원`}"
                 android:textSize="16dp"
@@ -103,7 +103,7 @@
                 android:layout_height="wrap_content"
                 android:text="@{recommCampaign.currentAmount*100/recommCampaign.goalAmount +`%`}"
                 android:textSize="16dp"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toRightOf="parent">
             </TextView>

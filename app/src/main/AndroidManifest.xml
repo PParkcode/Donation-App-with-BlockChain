@@ -39,6 +39,7 @@
         <activity android:name=".view.RequestListActivity"></activity>
         <activity android:name=".view.ExchangeActivity2"></activity>
         <activity android:name=".view.MyTransaction"></activity>
+        <activity android:name=".view.DetailWithDraw"></activity>
 
     </application>
 

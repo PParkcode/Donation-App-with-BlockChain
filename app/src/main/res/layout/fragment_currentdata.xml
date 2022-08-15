@@ -1,46 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
     <data>
-
+        <variable
+            name="withDrawViewModel"
+            type="com.example.testing1.viewModel.WithDrawViewModel" />
     </data>
 
 <androidx.constraintlayout.widget.ConstraintLayout
    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_margin="15dp">
+    android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/current_txt"
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="나눔 현황"
-        android:textSize="25sp"
-
-        android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="parent">
-    </TextView>
-
-    <com.dinuscxj.progressbar.CircleProgressBar
-        android:id="@+id/circlebar"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        android:max="100"
-        android:progress="70"
+        android:layout_height="731dp"
+        android:scrollbars="vertical"
+        app:historyData="@{withDrawViewModel.withDraws}"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.447"
-        app:progress_end_color="#ABF200"
-        app:progress_start_color="#FFBB00"
-        app:progress_stroke_cap="round"
-        app:progress_stroke_width="20dp "
-        app:progress_text_size="50sp"
-        app:style="solid_line">
-    </com.dinuscxj.progressbar.CircleProgressBar>
-
+        tools:layout_editor_absoluteX="0dp"
+        tools:listitem="@layout/withdraw_list">
+    </androidx.recyclerview.widget.RecyclerView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

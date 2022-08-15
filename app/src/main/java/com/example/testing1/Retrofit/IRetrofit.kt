@@ -35,15 +35,7 @@ interface IRetrofit {
     @Multipart
     @POST("api/charity")
     fun registCampaignApi(
-        /*
-            @Part("campaignName") campaignName: RequestBody,
-            @Part("charityName") charityName:RequestBody,
-            @Part("deadline") deadline: RequestBody,
-            @Part("goalAmount") goalAmount:RequestBody,
-            @Part("categories") categories:RequestBody,
-         */
         @PartMap map:HashMap<String,RequestBody> ,
-
             @Part coverImagePath:MultipartBody.Part?,
             @Part detailImagePath:MultipartBody.Part?,
    ):Call<ResponseCode>
@@ -75,4 +67,10 @@ interface IRetrofit {
 
     @GET("api/user/tx")
     fun txApi():Call<List<TransactionForm>>
+
+    @GET("api/user/info")
+    fun getMyCampaignApi():Call<List<Campaign>>
+
+    @GET("api/new/campaign/history")
+    fun getHistoryApi(@Query("campaignId") campaignId: String):Call<List<WithDrawData>>
 }

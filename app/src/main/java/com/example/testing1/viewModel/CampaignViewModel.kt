@@ -14,7 +14,7 @@ import com.example.testing1.model.CampaignFullDto
 private val TAG="tag1"
 
 class CampaignViewModel:ViewModel() {
-    //private var _campaigns:MutableLiveData<List<Campaign>>? = MutableLiveData()
+
     @RequiresApi(Build.VERSION_CODES.O)
     private val _campaigns=instance.getCampaignList()
     val campaigns : LiveData<List<Campaign>>

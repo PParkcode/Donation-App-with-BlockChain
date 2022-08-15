@@ -1,5 +1,6 @@
 package com.example.testing1.view
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -70,6 +71,8 @@ class PayActivity:FragmentActivity() {
                 .onDone { message ->
                     Log.d("done", message)
                     instance.charge(edit_amount.text.toString())
+                    var intent = Intent(this,MainNav::class.java)
+                    startActivity(intent)
 
                 }
                 .onReady { message ->
