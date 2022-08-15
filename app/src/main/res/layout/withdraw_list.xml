@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="withDraw"
+            type="com.example.testing1.model.WithDrawData" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="6dp"
+        android:layout_margin="15dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/sender_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Sender"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="@+id/receiver_txt"
+                app:layout_constraintTop_toTopOf="parent"/>
+            <TextView
+                android:id="@+id/receiver_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Receiver"
+                android:layout_marginStart="4dp"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/sender_txt"/>
+            <TextView
+                android:id="@+id/amount_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="출금 금액"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="@+id/receiver_txt"
+                app:layout_constraintTop_toBottomOf="@+id/receiver_txt"/>
+
+            <TextView
+                android:id="@+id/tx_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="블록 ID"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="@+id/receiver_txt"
+                app:layout_constraintTop_toBottomOf="@+id/amount_txt"/>
+            <TextView
+                android:id="@+id/date_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="거래 날짜"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="@+id/receiver_txt"
+                app:layout_constraintTop_toBottomOf="@+id/tx_txt"/>
+
+            <TextView
+                android:id="@+id/sender_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="@{withDraw.sender.toString()}"
+                app:layout_constraintBaseline_toBaselineOf="@+id/sender_txt"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <TextView
+                android:id="@+id/receiver_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="@{withDraw.receiver.toString()}"
+                app:layout_constraintBaseline_toBaselineOf="@+id/receiver_txt"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <TextView
+                android:id="@+id/amount_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="@{withDraw.amount+`원`}"
+                app:layout_constraintBaseline_toBaselineOf="@+id/amount_txt"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <TextView
+                android:id="@+id/tx_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="@{withDraw.blockChainTransactionId.substring(0,30)+`...`}"
+                app:layout_constraintBaseline_toBaselineOf="@+id/tx_txt"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <TextView
+                android:id="@+id/date_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="@{withDraw.date}"
+                app:layout_constraintBaseline_toBaselineOf="@+id/date_txt"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+</layout>
