@@ -18,14 +18,22 @@ class ResponseViewModel: ViewModel() {
         get()=_response
 
 
+    /*
     @RequiresApi(Build.VERSION_CODES.O)
     fun getPoint(campaignId:String, data:WithDrawData){
         _response =instance.withDraw(campaignId,data)
     }
 
+     */
+
+    /*
     @RequiresApi(Build.VERSION_CODES.O)
     fun payBackPoint(amount:String){
-        _response=instance.payBack(amount)
+        _response=instance.payBack(amount,completion = {
+
+        })
     }
+
+     */
 
 }

@@ -66,7 +66,7 @@ class MainNav:AppCompatActivity() {
                 R.id.tab_about ->{
                     val fragAbout=FragAbout()
                     supportFragmentManager.beginTransaction().replace(R.id.fl_container,fragAbout).commit()
-                    title="소개"
+                    title="나의 기부목록"
                 }
                 R.id.tab_myInform ->{
                     val fragMyInform=FragMyInform()
@@ -112,7 +112,8 @@ class MainNav:AppCompatActivity() {
         when(item.getItemId())
         {
             R.id.search_item ->{
-                var intent= Intent(applicationContext, SearchActivity::class.java)
+                //var intent= Intent(applicationContext, SearchActivity::class.java)
+                var intent =Intent(applicationContext,LoadingActivity::class.java)
                 startActivity(intent)
             }
             R.id.create_item->{

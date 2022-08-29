@@ -3,6 +3,7 @@ package com.example.testing1.view
 import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.PorterDuff
 import android.os.Build
 import android.os.Bundle
 import android.text.InputType
@@ -60,6 +61,7 @@ class DetailCampaign:AppCompatActivity() {
 
         binding.detailViewModel = campaignViewModel
         binding.lifecycleOwner = this
+        binding.coverImg.setColorFilter(Color.parseColor("#BDBDBD"), PorterDuff.Mode.MULTIPLY)
 
 
         campaignViewModel._campaignData?.observe(this, Observer {
@@ -93,6 +95,7 @@ class DetailCampaign:AppCompatActivity() {
 
         val fragmentIntroduce = FragIntroduce()
         supportFragmentManager.beginTransaction().add(R.id.frame_layout, fragmentIntroduce).commit()
+
         binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabReselected(tab: TabLayout.Tab?) {
             }

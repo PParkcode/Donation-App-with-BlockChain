@@ -16,31 +16,7 @@ import kotlinx.android.synthetic.main.recomm_item.view.*
 import java.util.*
 
 
-//arrayList<Int>에서 List<Campaing> 형태로 고치면 될듯 or CampaignList 형태로
-/*
-class RecommViewPagerAdapter(recommList: ArrayList<Int>) : RecyclerView.Adapter<RecommViewPagerAdapter.PagerViewHolder>() {
 
-
-
-    var item = recommList
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = PagerViewHolder((parent))
-
-
-    override fun getItemCount(): Int = item.size
-
-    override fun onBindViewHolder(holder: PagerViewHolder, position: Int) {
-        holder.img.setImageResource(item[position])
-    }
-
-    inner class PagerViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder
-        (LayoutInflater.from(parent.context).inflate(R.layout.recomm_item, parent, false)){
-
-        val img = itemView.recomm_img!!
-
-    }
-}
- */
 
                                                                         // RecyclerView.Adapter<RecommViewPagerAdapter.PagerViewHolder>()
 class RecommViewPagerAdapter(val campaignItemClick: (Campaign) -> Unit): ListAdapter<Campaign, RecommViewPagerAdapter.RecommViewHolder>(CampDiffUtil){

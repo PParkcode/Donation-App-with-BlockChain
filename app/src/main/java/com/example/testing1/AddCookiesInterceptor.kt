@@ -21,6 +21,7 @@ class AddCookiesInterceptor: Interceptor {
            // Log.d(TAG,"preferences가 null이 아니므로 addHeader()실행")
            // Log.d(TAG,"쿠키 값: "+preferences)
             builder.addHeader("Cookie",preferences)
+
         };
 
         //Web,Android,IOS 구분을 위한 User-Agent 세팅?

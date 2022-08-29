@@ -28,6 +28,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
+            android:tintMode="multiply"
+            android:tint="#BDBDBD"
             app:imageUrl="@{recommCampaign.coverImagePath}"
             android:id="@+id/recomm_img">
         </ImageView>

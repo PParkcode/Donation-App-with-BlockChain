@@ -234,7 +234,7 @@ class RetrofitManager {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun donate(amount: String): ResponseCode? {
+    fun donate(amount: String,completion: (Int)-> Unit): ResponseCode? {
         var code: ResponseCode? = null
         iRetrofit?.donateApi(amount)?.enqueue(object : Callback<ResponseCode> {
             override fun onResponse(call: Call<ResponseCode>, response: Response<ResponseCode>) {
@@ -243,10 +243,12 @@ class RetrofitManager {
                     Log.d(TAG, "response.body(): " + response.body().toString())
                     code?.code = response.code()
                     code?.message = response.message()
+                    completion(response.code())
 
                 } else {
                     Log.d(TAG, "통신 실패--> response is not successful")
                     Log.d(TAG,code?.message.toString())
+                    completion(response.code())
                 }
             }
 
@@ -260,7 +262,7 @@ class RetrofitManager {
 
     }
     @RequiresApi(Build.VERSION_CODES.O)
-    fun charge(amount: String): ResponseCode? {
+    fun charge(amount: String,completion: (Int) -> Unit): ResponseCode? {
         var code: ResponseCode? = null
         iRetrofit?.chargeApi(amount)?.enqueue(object : Callback<ResponseCode> {
             override fun onResponse(call: Call<ResponseCode>, response: Response<ResponseCode>) {
@@ -268,6 +270,7 @@ class RetrofitManager {
                     Log.d(TAG, "response.body(): " + response.body().toString())
                     code?.code = response.code()
                     code?.message = response.message()
+                    completion(response.code())
 
                 } else {
                     Log.d(TAG, "통신 실패--> response is not successful")
@@ -337,7 +340,7 @@ class RetrofitManager {
         return imageLiveData
     }
     @RequiresApi(Build.VERSION_CODES.O)
-    fun withDraw(campaignId:String, data:WithDrawData):MutableLiveData<ResponseCode>?{
+    fun withDraw(campaignId:String, data:WithDrawData,completion: (Int) -> Unit):MutableLiveData<ResponseCode>?{
         val responseLiveData:MutableLiveData<ResponseCode> = MutableLiveData()
 
         iRetrofit?.withDrawApi(campaignId = campaignId,data)?.enqueue(object :Callback<ResponseCode>{
@@ -347,6 +350,7 @@ class RetrofitManager {
                 if(response.isSuccessful){
                     responseLiveData.value=response.body()
                     Log.d(TAG,"withDrawApi is Success ")
+                    completion(200)
                 }
                 else{
                     Log.d(TAG,"withDrawApi is NOT Success ")
@@ -384,13 +388,14 @@ class RetrofitManager {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun payBack(amount: String):MutableLiveData<ResponseCode>{
+    fun payBack(amount: String,completion:(Int) -> Unit):MutableLiveData<ResponseCode>{
         var responseLiveData:MutableLiveData<ResponseCode> = MutableLiveData()
         iRetrofit?.payBackApi(amount)?.enqueue(object : Callback<ResponseCode>{
             override fun onResponse(call: Call<ResponseCode>, response: Response<ResponseCode>) {
 
                 Log.d("tag1","payback ON Response")
                 responseLiveData.value=response.body()
+                completion(response.code())
             }
 
             override fun onFailure(call: Call<ResponseCode>, t: Throwable) {

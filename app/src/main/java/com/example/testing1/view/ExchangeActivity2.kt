@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.MutableLiveData
@@ -30,6 +31,7 @@ private val AccessToken="c0597cc517ac901ab5ba5c178b50cdb7ff4140fb8a44029012d0a9d
 class ExchangeActivity2: AppCompatActivity(){
 
     private lateinit var binding:ExchangeActivity2Binding
+    private lateinit var dialog:DonateCustomDialog
     var Acno=""
     var bncd=""
     var point=""
@@ -40,6 +42,10 @@ class ExchangeActivity2: AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding=DataBindingUtil.setContentView<ExchangeActivity2Binding>(this, R.layout.exchange_activity2)
+
+        var actionBar: ActionBar?
+        actionBar = supportActionBar
+        actionBar?.hide()
 
         viewModel=ViewModelProvider(this).get(NHResponseViewModel::class.java)
         payBackViewModel=ViewModelProvider(this).get(ResponseViewModel::class.java)
@@ -99,10 +105,28 @@ class ExchangeActivity2: AppCompatActivity(){
 
                     if (it.Header.Rsms.equals("정상처리 되었습니다.")) {
                         Log.d("day1", "정상처리")
-                        payBackViewModel.payBackPoint(point)
-                        Toast.makeText(applicationContext, "입금되었습니다", Toast.LENGTH_LONG).show()
+                        //payBackViewModel.payBackPoint(point)
+                        instance.payBack(point,completion = { responseCode ->
+                            when(responseCode){
+                                200 ->{ // 여기서 LoadingActivity에 콜백 사용하고 싶은데...
+                                    val loadingIntent:Intent= Intent(this,LoadingActivity::class.java)
+                                    startActivity(loadingIntent)
+                                }
+                                else ->{
+                                    Toast.makeText(this,"입금에 실패하였습니다",Toast.LENGTH_SHORT).show()
+                                }
+                            }
+
+                        })
+                        dialog=DonateCustomDialog(this)
+                        dialog.show()
+
+
+
+                        /*
                         var intentToMain = Intent(this, MainNav::class.java)
                         startActivity(intentToMain)
+                         */
                     } else {
                         Toast.makeText(this, "입금이 실패되었습니다", Toast.LENGTH_LONG).show()
                     }

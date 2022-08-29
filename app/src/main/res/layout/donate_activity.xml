@@ -30,10 +30,9 @@
         android:id="@+id/edit_point"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="159dp"
+        android:layout_marginTop="16dp"
         android:hint="1000원 이상의 금액을 입력해주세요"
         android:inputType="number"
-        app:layout_constraintBottom_toTopOf="@+id/donate_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/donate_txt"
@@ -44,16 +43,15 @@
         android:id="@+id/donate_button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="388dp"
-
+        android:layout_marginBottom="24dp"
         android:gravity="center"
         android:text="후원하기"
-
         android:textAlignment="center"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_point"
-        tools:ignore="MissingConstraints"></Button>
+        tools:ignore="MissingConstraints"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

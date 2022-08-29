@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentActivity
@@ -29,6 +30,7 @@ class PayActivity:FragmentActivity() {
     val application_id ="625bdbe1270180001ef693aa"
 
     private lateinit var binding: PayActivityBinding
+    private lateinit var dialog: DonateCustomDialog
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,22 +72,34 @@ class PayActivity:FragmentActivity() {
                 }
                 .onDone { message ->
                     Log.d("done", message)
-                    instance.charge(edit_amount.text.toString())
-                    var intent = Intent(this,MainNav::class.java)
-                    startActivity(intent)
+                    instance.charge(edit_amount.text.toString(),completion = {responseCode ->
+                        when(responseCode){
+                            200 ->{ // 여기서 LoadingActivity에 콜백 사용하고 싶은데...
+                                val loadingIntent:Intent= Intent(this,LoadingActivity::class.java)
+                                startActivity(loadingIntent)
+                            }
+                            else ->{
+                                Toast.makeText(this,"기부에 실패하였습니다", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    })
+                    dialog=DonateCustomDialog(this)
+                    dialog.show()
+//                    var intent = Intent(this,MainNav::class.java)
+//                    startActivity(intent)
 
                 }
                 .onReady { message ->
-                    Log.d("ready", message)
+                    Log.d("tag3", message)
                 }
                 .onCancel { message ->
-                    Log.d("cancel", message)
+                    Log.d("tag3", message)
                 }
                 .onError{ message ->
-                    Log.d("error", message)
+                    Log.d("tag3", message)
                 }
                 .onClose { message ->
-                    Log.d("close", "close")
+                    Log.d("tag3", "close")
                 }
                 .request();
     }

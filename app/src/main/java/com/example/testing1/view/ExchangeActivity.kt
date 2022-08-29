@@ -9,24 +9,18 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import com.example.testing1.DialogInterface
 import com.example.testing1.MySharedPreferences
 import com.example.testing1.R
 import com.example.testing1.Retrofit.RetrofitManager
 import com.example.testing1.databinding.ExchangeActivityBinding
 import com.example.testing1.viewModel.MemberViewModel
-import kotlinx.android.synthetic.main.pay_activity.*
-import kr.co.bootpay.Bootpay
-import kr.co.bootpay.BootpayAnalytics
-import kr.co.bootpay.enums.PG
-import kr.co.bootpay.enums.UX
-import kr.co.bootpay.model.BootExtra
-import kr.co.bootpay.model.BootUser
-import java.time.LocalDateTime
 
 
-class ExchangeActivity:AppCompatActivity() {
+
+class ExchangeActivity:AppCompatActivity(),DialogInterface {
     private lateinit var binding: ExchangeActivityBinding
-
+    private lateinit var dialog:ExchangeDialog
 
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -34,11 +28,21 @@ class ExchangeActivity:AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding=DataBindingUtil.setContentView<ExchangeActivityBinding>(this,R.layout.exchange_activity)
 
+        var actionBar: ActionBar?
+        actionBar = supportActionBar
+        actionBar?.hide()
+
 
         var point=intent.getStringExtra("point")
 
 
         binding.nextBtn.setOnClickListener{
+
+            dialog= ExchangeDialog(this,point.toString(),this)
+            dialog.show()
+
+
+            /*
             var account:String=binding.accountEdit.text.toString()
             var bncd:String=binding.bncdEdit.text.toString()
             var intent=Intent(this,ExchangeActivity2::class.java)
@@ -46,6 +50,20 @@ class ExchangeActivity:AppCompatActivity() {
             intent.putExtra("bncd",bncd)
             intent.putExtra("point",point)
             startActivity(intent)
+
+             */
         }
+    }
+
+    override fun onNextBtnClick(point:String) {
+        Log.d("tag2","ExchangeActivity onNextBtnClick. point is ${point}")
+        var account:String=binding.accountEdit.text.toString()
+        var bncd:String=binding.bncdEdit.text.toString()
+        var intent=Intent(this,ExchangeActivity2::class.java)
+        intent.putExtra("account",account)
+        intent.putExtra("bncd",bncd)
+        intent.putExtra("point",point)
+        startActivity(intent)
+
     }
 }
